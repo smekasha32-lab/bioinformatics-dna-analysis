@@ -15,7 +15,7 @@ def gc_content(dna_sequence):
     if total_length == 0:
         return 0.0
 
-    return (g_count + c_count) / total_length
+    return ((g_count + c_count) / total_length) * 100
 
 def find_start_codon(dna_sequence):
     start_codons = ['ATG']
