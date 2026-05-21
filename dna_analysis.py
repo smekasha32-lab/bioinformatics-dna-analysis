@@ -81,8 +81,23 @@ def translate_dna_to_protein(dna_sequence):
     for i in range(0, len(dna_sequence) - 2, 3):
         codon = dna_sequence [i:i+3]
         amino_acid = codon_table.get(codon, '?')  # '?' for unknown codons
-        protein += amino_acid
+        protein += amino_acid   
+        if amino_acid == '*':  
+            break
     return protein
+
+def mutate_sequence(seq, position, new_base):
+    mutated = (seq[:position] + new_base + seq[position+1:])
+    return mutated
+
+def classify_mutation(original_protein, mutated_protein):
+    if original_protein == mutated_protein:
+        return "Silent Mutation"
+    elif '*' in mutated_protein[:-1]:
+
+        return "Nonsense mutation"
+    else:
+        return "Missense mutation"
 
 def main():
     file_path = "/Users/sololingz/Desktop/code/career/bioinformatics-dna-analysis/example.fasta"
@@ -94,11 +109,17 @@ def main():
     orf_sequences = extract_orf_sequence(file_path)
     start = orfs[0][0] if orfs else None
     end = orfs[0][1] if orfs else None
-    for orf in orf_sequences:
-        protein = translate_dna_to_protein(orf)
-        print("Protein:", protein)
+    protein = translate_dna_to_protein(seq)
+    mutated_sequence = mutate_sequence(seq, 5, 'A')
+    mutated_protein = translate_dna_to_protein(mutated_sequence) 
+    print("Original DNA:", seq)
+    print("Mutated DNA :", mutated_sequence)
+    print("\nOriginal Protein:", protein)
+    print("Mutated Protein :", mutated_protein)
+    mutation_type = classify_mutation(protein, mutated_protein)
+    print("Mutation Type:", mutation_type)
 
-    print("Start codon positions:", start_positions)
+    print("\nStart codon positions:", start_positions)
     print("Stop codon positions:", stop_positions)
     print("Sequence length:", len(seq))
     print("GC content:", gc_content(seq))
@@ -109,6 +130,7 @@ def main():
     print("End position:", end)
     print("Length:", end - start)
     print("Sequence:", orf_sequences)
+
 
 if __name__ == "__main__":
     main()

@@ -20,6 +20,8 @@ The script can:
 - find stop codons
 - find ORFs
 - translate DNA into protein
+- simulate point mutation of DNA
+- analyse difference in protein after mutation
 
 ## Run It
 
@@ -44,6 +46,14 @@ stop codon in the same reading frame.
 
 Protein translation: changing DNA codons into amino acid letters.
 
+Mutation: a change in the DNA sequence.
+
+Silent mutation: a DNA mutation that does not change the amino acid.
+
+Missense mutation: a mutation that changes one amino acid into another.
+
+Nonsense mutation: a mutation that creates a stop codon.
+
 ## Technologies Used
 
 - Python 3
@@ -62,4 +72,6 @@ Protein translation: changing DNA codons into amino acid letters.
 
 ## Output
 
-Protein: MRYACSRSIDR*
+- Protein: MHRYACSRSIDRS*
+- Mutated protein: MQRYACSRSIDRS*
+- Missense mutation
