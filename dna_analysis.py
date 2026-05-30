@@ -98,11 +98,15 @@ def classify_mutation(original_protein, mutated_protein):
         return "Nonsense mutation"
     else:
         return "Missense mutation"
+    
+def get_codon_info(sequence, position):
+    codon_start = (position // 3) * 3
+    codon = sequence[codon_start:codon_start + 3]
+    return codon 
 
 def main():
     file_path = "/Users/sololingz/Desktop/code/career/bioinformatics-dna-analysis/example.fasta"
     seq = read_fasta(file_path)
-    print("Sequence :", seq)
     start_positions = find_start_codon(seq)
     stop_positions = find_stop_codons(seq)
     orfs = find_orfs(seq)
@@ -112,24 +116,38 @@ def main():
     protein = translate_dna_to_protein(seq)
     mutated_sequence = mutate_sequence(seq, 5, 'A')
     mutated_protein = translate_dna_to_protein(mutated_sequence) 
-    print("Original DNA:", seq)
+    print("\n--- DNA Sequences and Translated Proteins ---")
+    print("Original DNA :", seq)
     print("Mutated DNA :", mutated_sequence)
-    print("\nOriginal Protein:", protein)
+    print("Original Protein:", protein)
     print("Mutated Protein :", mutated_protein)
-    mutation_type = classify_mutation(protein, mutated_protein)
-    print("Mutation Type:", mutation_type)
-
-    print("\nStart codon positions:", start_positions)
+    
+    mutation_position = 5
+    original_codon = get_codon_info(seq, mutation_position)
+    mutated_codon = get_codon_info(mutated_sequence, mutation_position)
+    print("\n--- Original DNA Sequence Analysis ---")
+    print("Start codon positions:", start_positions)
     print("Stop codon positions:", stop_positions)
     print("Sequence length:", len(seq))
     print("GC content:", gc_content(seq))
     print("the first 20 bases of the sequence:",seq[:20])
     print("Open reading frames (ORFs):", orfs)
-    print("\nORF found:")
+    print("\n--- ORF Analysis ---")
+    print("ORF found:")
     print("Start position:", start)
     print("End position:", end)
     print("Length:", end - start)
-    print("Sequence:", orf_sequences)
+    print("ORF Sequences:", orf_sequences)
+    print("\n--- Mutation Report ---")
+    print(f"DNA Change: {original_codon} -> {mutated_codon}")
+    original_amino_acid = codon_table.get(original_codon, '?')
+    mutated_amino_acid = codon_table.get(mutated_codon, '?')
+    print(f"Protein Change: {original_amino_acid} -> {mutated_amino_acid}")
+    
+    mutation_type = classify_mutation(protein, mutated_protein)
+    print("Mutation Type:", mutation_type)
+
+    
 
 
 if __name__ == "__main__":
